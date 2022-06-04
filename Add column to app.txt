@@ -1,0 +1,106 @@
+Add-PSSnapin Microsoft.SharePoint.PowerShell -ErrorAction SilentlyContinue
+Function Add-FieldToList($SiteURL, $ListName, $FieldName, $FieldType, $IsRequired)
+{
+#Set the Error Action
+$ErrorActionPreference = "Stop"
+Try{
+#Get the List
+$List = (Get-SPWeb $SiteURL).Lists.TryGetList($ListName)
+#Check if List with specific name exists
+if($List -ne $null)
+{
+if(!$List.Fields.ContainsField($FieldName))
+{ 
+#Add columns to the List
+$List.Fields.Add($FieldName,$FieldType,$IsRequired)
+
+#Update the List
+$List.Update()
+
+write-host "New Column '$FieldName' Added to the List!" -ForegroundColor Green
+}
+else
+{
+write-host "Field '$FieldName' Already Exists in the List" -ForegroundColor Red
+}
+}
+else
+{
+write-host "List '$ListName' doesn't exists!" -ForegroundColor Red
+} 
+}
+catch {
+Write-Host $_.Exception.Message -ForegroundColor Red
+}
+finally {
+#Reset the Error Action to Default
+$ErrorActionPreference = "Continue"
+}
+}
+
+#Parameters
+$SiteURL = https://services2013-t01.dtek.com/mobileworkers/grids
+
+$library = @('KES_Dopusk','KES_Podtverzhdeniya','KES_Podtverzhdeniya','KES_Dokumentatsiya','DnES_Dopusk','DnES_Podtverzhdeniya','DnES_Defect','DnES_Dokumentatsiya','DES_Dopusk','DES_Podtverzhdeniya','DES_Defect','DES_Dokumentatsiya','OES_Dopusk','OES_Podtverzhdeniya','OES_Defekt','OES_Dokumentatsiya','KRES_Dopusk','KRES_Podtverzhdeniya','KRES_Defekt','KRES_Dokumentatsiya','Sh_Yubileynaya_Dopusk','Sh_Yubileynaya_Podtverzhdeniya','Sh_Yubileynaya_Defect','Sh_Yubileynaya_Doc','Sh_Geroev_Kosmosa_Dopusk','Sh_Geroev_Kosmosa_Podtverzhdeniya','Sh_Geroev_Kosmosa_Defect','Sh_Geroev_Kosmosa_Doc','Sh_ZapadnoDonbasskaya_Dopusk','Sh_ZapadnoDonbasskaya_Podtverzhdeniya','Sh_Zapadno_Donbasskaya_Defect','Sh_ZapadnoDonbasskaya_Doc','ZaTES_Defekt','KyTES_Defect','LyTES_Defect','KpTES_Defect','LaTES_Defect')
+
+foreach ($i in $library)
+
+{
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "Название"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "Latitude"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "Longitude"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "ToroOrderCode"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "TechnicalObjectCode"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "PersonnelNumber"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Single Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Text
+$FieldName = "DefectCode"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+#Add 'Name' - Multiple Line of Text Field
+$FieldType = [Microsoft.SharePoint.SPFieldType]::Note 
+$FieldName = "Comment"
+$IsRequired = $False
+#Call the function to Add Field to List
+Add-FieldToList $SiteURL $i $FieldName $FieldType $IsRequired
+
+}
